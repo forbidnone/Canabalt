@@ -53,11 +53,11 @@ sf::Texture& AssetManager::GetTexture(std::string _filename)
 		
 		//No we didn't find it
 
-		// Let's creat it then
+		// Let's create it then
 
 		// Create a new key value pair using the filename
 		// the subscript [] operator creates an entry in
-		// the map if there is no already one there
+		// the map if there is not already one there
 
 		sf::Texture& texture = s_instance->m_textures[_filename];
 		// blank texture has been created
@@ -69,4 +69,75 @@ sf::Texture& AssetManager::GetTexture(std::string _filename)
 		return texture;
 
 	}
+}
+
+
+
+sf::SoundBuffer& AssetManager::GetSoundBuffer(std::string _filename)
+{
+
+	// Create an iterator to hold a key and value pair
+	// and search for the required key
+	// using the passed in file name
+	auto keyValuePair = s_instance->m_soundBuffers.find(_filename);
+	// "auto" is this case is equivalent to writing
+	// std::map<std::string, sf::SoundBuffer>::iterator
+	// this keyword (auto) can be used in cases where the
+	// compiler can figure out the type of a variable for you
+	// YOU ARE NOT ALLOWED TO USE THIS EXCEPT FOR ITERATORS
+
+	// Did we find the sound buffer? (aka was it already loaded?)
+	// (iterator will be at the end if we did Not find it)
+	if (keyValuePair != s_instance->m_soundBuffers.end())
+	{
+
+		// Yes! We found it
+		return keyValuePair->second;
+
+	}
+	else
+	{
+
+		//No we didn't find it
+
+		// Let's create it then
+
+		// Create a new key value pair using the filename
+		// the subscript [] operator creates an entry in
+		// the map if there is not already one there
+
+		sf::SoundBuffer& soundBuffer = s_instance->m_soundBuffers[_filename];
+		// blank texture has been created
+		// now just load it from file using sfml
+
+		soundBuffer.loadFromFile(_filename);
+
+		// Return te texture to the calling code
+		return soundBuffer;
+
+	}
+}
+
+sf::Font& AssetManager::GetFont(std::string _filename)
+{
+
+	auto keyValuePair = s_instance->m_fonts.find(_filename);
+
+	if (keyValuePair != s_instance->m_fonts.end())
+	{
+
+		return keyValuePair->second;
+
+	}
+	else
+	{
+
+		sf::Font& font = s_instance->m_fonts[_filename];
+
+		font.loadFromFile(_filename);
+
+		return font;
+
+	}
+
 }

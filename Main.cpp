@@ -42,6 +42,12 @@ int main()
 	//Testing AssetManager
 	sf::Sprite testSprite;
 	testSprite.setTexture(AssetManager::GetTexture("graphics/playerJump.png"));
+	sf::Sound testSound;
+	testSound.setBuffer(AssetManager::GetSoundBuffer("audio/death.wav"));
+	testSound.play();
+	sf::Text testText;
+	testText.setFont(AssetManager::GetFont("fonts/mainFont.ttf"));
+	testText.setString("TEST TEXT");
 
 	//----------------------------------------------------------------------------------
 	//End game Setup
@@ -118,8 +124,11 @@ int main()
 
 
 		// Draw Everything
+		gameWindow.draw(testText);
 		gameWindow.draw(testSprite);
 
+		
+		
 
 
 
