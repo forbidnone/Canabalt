@@ -12,6 +12,7 @@
 //---------------------------------------------------------------------------------------
 #include "AssetManager.h"
 #include "Animation.h"
+#include "AnimationSystem.h"
 
 //---------------------------------------------------------------------------------------
 // End Project Inlcudes
@@ -52,14 +53,21 @@ int main()
 
 
 	// Testing Animation
-	Animation testAnimation;
-	testAnimation.SetSprite(testSprite);
+	
+	AnimationSystem testAnimationSystem;
+	testAnimationSystem.SetSprite(testSprite);
+
+	
+	Animation& testAnimation = testAnimationSystem.CreateAnimation("run");
 	testAnimation.AddFrame(AssetManager::GetTexture("graphics/playerrun1.png"));
 	testAnimation.AddFrame(AssetManager::GetTexture("graphics/playerrun2.png"));
 	testAnimation.SetLoop(true);
 	testAnimation.SetPlayBackSpeed(10.0f);
-	testAnimation.Play();
 
+	Animation& jumpAnimation = testAnimationSystem.CreateAnimation("jump");
+	jumpAnimation.AddFrame(AssetManager::GetTexture("graphics/playerjump.png"));
+
+	testAnimationSystem.Play("run");
 
 	//----------------------------------------------------------------------------------
 	//End game Setup
@@ -114,7 +122,7 @@ int main()
 		sf::Time frameTime = gameClock.restart();
 
 		// Update our Animation
-		testAnimation.Update(frameTime);
+		testAnimationSystem.Update(frameTime);
 
 
 		//-------------------------------------------------------------------------------
