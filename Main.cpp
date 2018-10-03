@@ -2,6 +2,8 @@
 // Included Libraries
 //---------------------------------------------------------------------------------------
 #include <SFML/Graphics.hpp>
+#include <cstdlib>
+#include <ctime>
 //---------------------------------------------------------------------------------------
 // End Libraries
 //---------------------------------------------------------------------------------------
@@ -12,6 +14,7 @@
 //---------------------------------------------------------------------------------------
 #include "AssetManager.h"
 #include "Player.h"
+#include "Platform.h"
 
 //---------------------------------------------------------------------------------------
 // End Project Inlcudes
@@ -40,11 +43,18 @@ int main()
 	// Create AssetManager
 	AssetManager assets;
 
+	// Seed random number generator
+	srand(time(NULL));
+
 	Player player;
 	player.Spawn();
 
 	// Create game camera
 	sf::View camera = gameWindow.getDefaultView();
+
+	// Create platforms
+	Platform platform;
+	platform.Spawn();
 
 	//----------------------------------------------------------------------------------
 	//End game Setup
@@ -132,6 +142,7 @@ int main()
 		// Draw the game world using the camera
 		gameWindow.setView(camera);
 		player.Draw(gameWindow);
+		platform.Draw(gameWindow);
 
 		//Draw the UI to the window
 		gameWindow.setView(gameWindow.getDefaultView());

@@ -11,7 +11,7 @@
 // Constants
 #define jump_SPEED -1500.0f
 #define GRAVITY 2000.0f
-#define run_SPEED_INITIAL 10.0f
+#define run_SPEED_INITIAL 100.0f
 
 Player::Player()
 	: m_sprite()
