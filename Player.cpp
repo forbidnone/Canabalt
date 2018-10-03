@@ -106,3 +106,10 @@ void Player::Spawn()
 	m_velocity.x = run_SPEED_INITIAL;
 
 }
+
+sf::Vector2f Player::GetPosition()
+{
+
+	return m_sprite.getPosition();
+
+}

@@ -23,6 +23,8 @@ public:
 
 	void Spawn();
 
+	sf::Vector2f GetPosition();
+
 private:
 
 	// Assets
