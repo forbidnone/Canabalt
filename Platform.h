@@ -14,6 +14,8 @@ public:
 
 	void Draw(sf::RenderTarget& _target);
 
+	sf::FloatRect GetCollider();
+
 private:
 
 	sf::Sprite m_sprite;

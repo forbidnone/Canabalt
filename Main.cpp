@@ -115,6 +115,9 @@ int main()
 		// Process all game objects
 		player.Update(frameTime);
 
+		// Collision Detection
+		player.HandleCollision(platform.GetCollider());
+
 
 		// Update camera position
 		camera.setCenter(player.GetPosition().x + camera.getSize().x * 0.4f, camera.getCenter().y);

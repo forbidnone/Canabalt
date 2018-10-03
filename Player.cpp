@@ -20,6 +20,7 @@ Player::Player()
 	, m_landSound()
 	, m_animation()
 	, m_velocity(0.0f, 0.0f)
+	, m_touchingGround(false)
 {
 
 	// Sprite setup
@@ -59,13 +60,14 @@ void Player::Input(sf::Event _gameEvent)
 		{
 
 			//Player has tried to jump
+			if (m_touchingGround)
+			{
+				//Play jump sound
+				m_jumpSound.play();
 
-			//Play jump sound
-			m_jumpSound.play();
-
-			//Set to the players velocity
-			m_velocity.y = jump_SPEED;
-
+				//Set to the players velocity
+				m_velocity.y = jump_SPEED;
+			}
 		}
 	}
 }
@@ -76,9 +78,16 @@ void Player::Update(sf::Time _frameTime)
 	// Process te animation
 	m_animation.Update(_frameTime);
 	
+	
+	
+
 	// Apply Gravity to our velocity
-	float velocityChange = GRAVITY * _frameTime.asSeconds();
-	m_velocity.y += velocityChange;
+	if (m_touchingGround == false)
+	{
+		float velocityChange = GRAVITY * _frameTime.asSeconds();
+		m_velocity.y += velocityChange;
+	}
+
 
 	//Move sprite based on velocity
 	sf::Vector2f currentPosition = m_sprite.getPosition();
@@ -111,5 +120,63 @@ sf::Vector2f Player::GetPosition()
 {
 
 	return m_sprite.getPosition();
+
+}
+
+void Player::HandleCollision(sf::FloatRect _platform)
+{
+
+	// Assume we did not collide
+	bool wereTouchingGround = m_touchingGround;
+
+	m_touchingGround = false;
+
+	// Get the collider for the player
+	sf::FloatRect playerCollider = m_sprite.getGlobalBounds();
+
+	// Does our sprite intersect the platform?
+	if (playerCollider.intersects(_platform))
+	{
+
+		// Yes it does!
+
+		// Check if the bottom of our feet are touching the top of the platform
+
+		// Create feet collider
+		sf::FloatRect feetCollider = playerCollider;
+		// Set our feet top to be 10 pixels from the bottom of the player collider
+		feetCollider.top += playerCollider.height - 10;
+		// set our feet collider height to be 10 pixels
+		feetCollider.height - 10;
+
+		// Create platform top collider
+		sf::FloatRect platformTop = _platform;
+		platformTop.height = 10;
+
+		//Are the feet touching the top of the platform
+		if (feetCollider.intersects(platformTop))
+		{
+
+			//Yes feet are touching
+			
+			m_touchingGround = true;
+
+			if (wereTouchingGround == false && m_velocity.y > 0) // Check if we are falling downwards
+			{
+				
+				// We have touched the ground
+				m_animation.Play("run");
+				m_landSound.play();
+				m_velocity.y = 0;
+				
+			}
+		}
+	}
+
+	// if there was not a collision set touching ground to false
+	if (m_touchingGround == false && wereTouchingGround == true)
+	{
+		m_animation.Play("jump");
+	}
 
 }
