@@ -18,7 +18,10 @@ public:
 
 private:
 
+	// Assets
 	sf::Sprite m_sprite;
 
+	// Platform shared data
+	static float s_furthestPoint;
 
 };

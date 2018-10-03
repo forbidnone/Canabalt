@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <cstdlib>
 #include <ctime>
+#include <vector>
 //---------------------------------------------------------------------------------------
 // End Libraries
 //---------------------------------------------------------------------------------------
@@ -53,8 +54,14 @@ int main()
 	sf::View camera = gameWindow.getDefaultView();
 
 	// Create platforms
-	Platform platform;
-	platform.Spawn();
+	
+	std::vector<Platform> platforms;
+	for (int i = 0; i < 5; i++)
+	{
+
+		platforms.push_back(Platform());
+		platforms.back().Spawn();
+	}
 
 	//----------------------------------------------------------------------------------
 	//End game Setup
@@ -116,7 +123,14 @@ int main()
 		player.Update(frameTime);
 
 		// Collision Detection
-		player.HandleCollision(platform.GetCollider());
+		std::vector<sf::FloatRect> platformColliders;
+		for (auto it = platforms.begin(); it != platforms.end(); it++)
+		{
+
+			platformColliders.push_back(it->GetCollider());
+
+		}
+		player.HandleCollision(platformColliders);
 
 
 		// Update camera position
@@ -145,7 +159,12 @@ int main()
 		// Draw the game world using the camera
 		gameWindow.setView(camera);
 		player.Draw(gameWindow);
-		platform.Draw(gameWindow);
+		for (auto it = platforms.begin(); it != platforms.end(); it++)
+		{
+
+			it->Draw(gameWindow);
+
+		}
 
 		//Draw the UI to the window
 		gameWindow.setView(gameWindow.getDefaultView());
