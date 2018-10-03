@@ -11,8 +11,7 @@
 // Project Includes
 //---------------------------------------------------------------------------------------
 #include "AssetManager.h"
-#include "Animation.h"
-#include "AnimationSystem.h"
+#include "Player.h"
 
 //---------------------------------------------------------------------------------------
 // End Project Inlcudes
@@ -41,33 +40,9 @@ int main()
 	// Create AssetManager
 	AssetManager assets;
 
-	//Testing AssetManager
-	sf::Sprite testSprite;
-	testSprite.setTexture(AssetManager::GetTexture("graphics/playerJump.png"));
-	sf::Sound testSound;
-	testSound.setBuffer(AssetManager::GetSoundBuffer("audio/death.wav"));
-	testSound.play();
-	sf::Text testText;
-	testText.setFont(AssetManager::GetFont("fonts/mainFont.ttf"));
-	testText.setString("TEST TEXT");
+	Player player;
+	player.Spawn();
 
-
-	// Testing Animation
-	
-	AnimationSystem testAnimationSystem;
-	testAnimationSystem.SetSprite(testSprite);
-
-	
-	Animation& testAnimation = testAnimationSystem.CreateAnimation("run");
-	testAnimation.AddFrame(AssetManager::GetTexture("graphics/playerrun1.png"));
-	testAnimation.AddFrame(AssetManager::GetTexture("graphics/playerrun2.png"));
-	testAnimation.SetLoop(true);
-	testAnimation.SetPlayBackSpeed(10.0f);
-
-	Animation& jumpAnimation = testAnimationSystem.CreateAnimation("jump");
-	jumpAnimation.AddFrame(AssetManager::GetTexture("graphics/playerjump.png"));
-
-	testAnimationSystem.Play("run");
 
 	//----------------------------------------------------------------------------------
 	//End game Setup
@@ -97,6 +72,10 @@ int main()
 		while (gameWindow.pollEvent(gameEvent))
 		{
 
+			//Pass input to game objects
+			player.Input(gameEvent);
+
+
 
 			if (gameEvent.type == sf::Event::Closed)
 			{
@@ -120,9 +99,9 @@ int main()
 		//-------------------------------------------------------------------------------
 
 		sf::Time frameTime = gameClock.restart();
-
-		// Update our Animation
-		testAnimationSystem.Update(frameTime);
+		
+		// Process all game objects
+		player.Update(frameTime);
 
 
 		//-------------------------------------------------------------------------------
@@ -143,11 +122,8 @@ int main()
 
 
 		// Draw Everything
-		gameWindow.draw(testText);
-		gameWindow.draw(testSprite);
+		player.Draw(gameWindow);
 
-		
-		
 
 
 
